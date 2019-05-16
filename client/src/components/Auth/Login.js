@@ -25,6 +25,7 @@ const Login = ({ classes }) => {
       const { me } = await client.request(ME_QUERY)
       // add the user's info to 'currentUser' field in state
       dispatch({ type: 'LOGIN_USER', payload: me })
+      dispatch({ type: 'IS_LOGGED_IN', payload: googleUser.isSignedIn() })
     } catch (err) {
       handleFailure(err)
     }
@@ -32,7 +33,6 @@ const Login = ({ classes }) => {
 
   const handleFailure = err => console.error('Error logging in', err)
 
-  console.log('login')
   return (
     <div className={classes.root}>
       <Typography
