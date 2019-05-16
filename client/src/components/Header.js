@@ -3,6 +3,8 @@ import Context from '../context'
 
 import { withStyles } from '@material-ui/core/styles'
 
+import Signout from '../components/Auth/Signout'
+
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import MapIcon from '@material-ui/icons/Map'
@@ -38,6 +40,7 @@ const Header = ({ classes }) => {
           </div>
 
           {/* SIGN-OUT BUTTON */}
+          <Signout />
         </Toolbar>
       </AppBar>
     </div>
