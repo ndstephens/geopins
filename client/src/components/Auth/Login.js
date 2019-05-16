@@ -1,47 +1,57 @@
 import React, { useContext } from 'react'
-import { GraphQLClient } from 'graphql-request'
 import Context from '../../context'
+import { GraphQLClient } from 'graphql-request'
+import { ME_QUERY } from '../../graphql/queries'
 
 import { withStyles } from '@material-ui/core/styles'
 
 import { GoogleLogin } from 'react-google-login'
-// import Typography from "@material-ui/core/Typography";
-
-const ME_QUERY = `
-{
-  me {
-    _id
-    name
-    email
-    picture
-  }
-}
-`
+import Typography from '@material-ui/core/Typography'
 
 const Login = ({ classes }) => {
   const { dispatch } = useContext(Context)
 
   const handleSuccess = async googleUser => {
-    // grab the successfully logged-in user's Google idToken
-    const idToken = googleUser.getAuthResponse().id_token
-    // create a GraphQL Client object, pass it the token as an auth header
-    const client = new GraphQLClient('/graphql', {
-      headers: {
-        authorization: idToken,
-      },
-    })
-    // send a query to the server, includes the auth token, must be verified
-    const data = await client.request(ME_QUERY)
-    // console.log({ data })
-    dispatch({ type: 'LOGIN_USER', payload: data.me })
+    try {
+      // grab the successfully logged-in user's Google idToken
+      const idToken = googleUser.getAuthResponse().id_token
+      // create a GraphQL Client object, pass it the token as an auth header
+      const client = new GraphQLClient('/graphql', {
+        headers: {
+          authorization: idToken,
+        },
+      })
+      // query the server (server verifies token, finds or creates a User, returns user's info)
+      const { me } = await client.request(ME_QUERY)
+      // add the user's info to 'currentUser' field in state
+      dispatch({ type: 'LOGIN_USER', payload: me })
+    } catch (err) {
+      handleFailure(err)
+    }
   }
 
+  const handleFailure = err => console.error('Error logging in', err)
+
+  console.log('login')
   return (
-    <GoogleLogin
-      clientId="510980565610-7pvoehe81j7borjurdf4jtics2u7t5ed.apps.googleusercontent.com"
-      onSuccess={handleSuccess}
-      isSignedIn={true}
-    />
+    <div className={classes.root}>
+      <Typography
+        component="h1"
+        variant="h3"
+        gutterBottom
+        noWrap
+        style={{ color: 'rgb(66, 133, 244)' }}
+      >
+        Welcome
+      </Typography>
+      <GoogleLogin
+        clientId="510980565610-7pvoehe81j7borjurdf4jtics2u7t5ed.apps.googleusercontent.com"
+        onSuccess={handleSuccess}
+        onFailure={handleFailure}
+        isSignedIn={true}
+        theme="dark"
+      />
+    </div>
   )
 }
 

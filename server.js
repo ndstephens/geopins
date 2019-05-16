@@ -23,6 +23,7 @@ const server = new ApolloServer({
     } catch (err) {
       console.error(`Unable to authenticate user with token ${authToken}`)
     }
+    // attach found (or created) user to the context object
     return { currentUser }
   },
 })
