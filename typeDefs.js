@@ -9,7 +9,7 @@ module.exports = gql`
     _id: ID!
     name: String!
     email: String!
-    pictureUrl: String
+    picture: String
   }
 
   type Pin {
