@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import Context from '../../context'
 import { GraphQLClient } from 'graphql-request'
+import { BASE_URL } from '../../graphql/client'
 import { ME_QUERY } from '../../graphql/queries'
 
 import { withStyles } from '@material-ui/core/styles'
@@ -16,7 +17,7 @@ const Login = ({ classes }) => {
       // grab the successfully logged-in user's Google idToken
       const idToken = googleUser.getAuthResponse().id_token
       // create a GraphQL Client object, pass it the token as an auth header
-      const client = new GraphQLClient('/graphql', {
+      const client = new GraphQLClient(BASE_URL, {
         headers: {
           authorization: idToken,
         },

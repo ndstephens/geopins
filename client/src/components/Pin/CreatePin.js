@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react'
 import axios from 'axios'
-import { GraphQLClient } from 'graphql-request'
+import { useClient } from '../../graphql/client'
 
 import { CREATE_PIN } from '../../graphql/mutations'
 
@@ -16,6 +16,8 @@ import ClearIcon from '@material-ui/icons/Clear'
 import SaveIcon from '@material-ui/icons/SaveTwoTone'
 
 const CreatePin = ({ classes }) => {
+  const client = useClient()
+
   const {
     state: { draft },
     dispatch,
@@ -48,15 +50,6 @@ const CreatePin = ({ classes }) => {
       e.preventDefault()
       // update isSubmitting in state (used to disable Submit button)
       setIsSubmitting(true)
-      // grab signed-in user's token from gapi on the window object
-      const idToken = window.gapi.auth2
-        .getAuthInstance()
-        .currentUser.get()
-        .getAuthResponse().id_token
-      // create GraphQL client object
-      const client = new GraphQLClient('/graphql', {
-        headers: { authorization: idToken },
-      })
       // upload image to Cloudinary and retrieve its URL
       const imageUrl = await handleImageUpload()
       // create GraphQL variables object
