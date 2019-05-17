@@ -1,7 +1,10 @@
 import React, { useState, useContext } from 'react'
 import axios from 'axios'
-import { withStyles } from '@material-ui/core/styles'
+import { GraphQLClient } from 'graphql-request'
 
+import { CREATE_PIN } from '../../graphql/mutations'
+
+import { withStyles } from '@material-ui/core/styles'
 import Context from '../../context'
 
 import TextField from '@material-ui/core/TextField'
@@ -13,11 +16,15 @@ import ClearIcon from '@material-ui/icons/Clear'
 import SaveIcon from '@material-ui/icons/SaveTwoTone'
 
 const CreatePin = ({ classes }) => {
-  const { dispatch } = useContext(Context)
+  const {
+    state: { draft },
+    dispatch,
+  } = useContext(Context)
 
   const [title, setTitle] = useState('')
   const [image, setImage] = useState('')
   const [content, setContent] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const handleDeleteDraft = () => {
     dispatch({ type: 'DELETE_DRAFT' })
@@ -37,9 +44,39 @@ const CreatePin = ({ classes }) => {
   }
 
   const handleSubmit = async e => {
-    e.preventDefault()
-    const url = await handleImageUpload()
-    console.log({ title, image, url, content })
+    try {
+      e.preventDefault()
+      // update isSubmitting in state (used to disable Submit button)
+      setIsSubmitting(true)
+      // grab signed-in user's token from gapi on the window object
+      const idToken = window.gapi.auth2
+        .getAuthInstance()
+        .currentUser.get()
+        .getAuthResponse().id_token
+      // create GraphQL client object
+      const client = new GraphQLClient('/graphql', {
+        headers: { authorization: idToken },
+      })
+      // upload image to Cloudinary and retrieve its URL
+      const imageUrl = await handleImageUpload()
+      // create GraphQL variables object
+      const variables = {
+        title: title.trim(),
+        content: content.trim(),
+        image: imageUrl,
+        latitude: draft.latitude,
+        longitude: draft.longitude,
+      }
+      // send mutation to create new Pin, grab response
+      const { createPin } = await client.request(CREATE_PIN, variables)
+      // clear draft pin data from state/context
+      handleDeleteDraft()
+      console.log('Pin created', { createPin })
+    } catch (err) {
+      // re-enable Submit button
+      setIsSubmitting(false)
+      console.error('Error creating Pin', err)
+    }
   }
 
   return (
@@ -118,7 +155,7 @@ const CreatePin = ({ classes }) => {
           className={classes.button}
           variant="contained"
           color="secondary"
-          disabled={!title.trim() || !image || !content.trim()}
+          disabled={!title.trim() || !image || !content.trim() || isSubmitting}
           onClick={handleSubmit}
         >
           Submit

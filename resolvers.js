@@ -12,4 +12,14 @@ module.exports = {
   Query: {
     me: authenticated((root, args, ctx) => ctx.currentUser),
   },
+  Mutation: {
+    createPin: authenticated(async (root, { input }, { currentUser, Pin }) => {
+      const newPin = await new Pin({
+        ...input,
+        author: currentUser._id,
+      }).save()
+
+      return Pin.populate(newPin, 'author')
+    }),
+  },
 }

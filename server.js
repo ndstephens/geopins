@@ -2,6 +2,7 @@ require('dotenv').config()
 
 const { ApolloServer } = require('apollo-server')
 const mongoose = require('mongoose')
+const Pin = require('./models/Pin')
 
 const { findOrCreateUser } = require('./controllers/userController')
 
@@ -24,7 +25,7 @@ const server = new ApolloServer({
       console.error(`Unable to authenticate user with token ${authToken}`)
     }
     // attach found (or created) user to the context object
-    return { currentUser }
+    return { currentUser, Pin }
   },
 })
 

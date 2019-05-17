@@ -8,9 +8,11 @@ const PinSchema = new mongoose.Schema(
     },
     content: {
       type: String,
+      required: true,
     },
     image: {
       type: String,
+      required: true,
     },
     latitude: {
       type: Number,
@@ -33,7 +35,7 @@ const PinSchema = new mongoose.Schema(
           ref: 'User',
           required: true,
         },
-        createdAt: { type: Date, default: Date.now, required: true },
+        createdAt: { type: Date, default: Date.now },
       },
     ],
   },
