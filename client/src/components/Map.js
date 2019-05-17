@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import ReactMapGL, { NavigationControl, Marker } from 'react-map-gl'
 import { withStyles } from '@material-ui/core/styles'
+
+import Context from '../context'
 
 import PinIcon from './PinIcon'
 
@@ -15,6 +17,10 @@ const INITIAL_VIEWPORT = {
 }
 
 const Map = ({ classes }) => {
+  const {
+    state: { draft },
+    dispatch,
+  } = useContext(Context)
   const [viewport, setViewport] = useState(INITIAL_VIEWPORT)
   const [userPosition, setUserPosition] = useState(null)
 
@@ -32,6 +38,18 @@ const Map = ({ classes }) => {
     }
   }
 
+  const handleMapClick = ({ lngLat, leftButton }) => {
+    if (!leftButton) return
+    if (!draft) {
+      dispatch({ type: 'CREATE_DRAFT' })
+    }
+    const [longitude, latitude] = lngLat
+    dispatch({
+      type: 'UPDATE_DRAFT_LOCATION',
+      payload: { latitude, longitude },
+    })
+  }
+
   return (
     <div className={classes.root}>
       <ReactMapGL
@@ -40,6 +58,7 @@ const Map = ({ classes }) => {
         mapStyle="mapbox://styles/mapbox/streets-v9"
         mapboxApiAccessToken="pk.eyJ1IjoibmRzdGVwaGVucyIsImEiOiJjanZyOTN3ZW8yc2p0NDNsNjRmZnJ2NjV0In0.yUu9-1x2TlsiQTZm30lMiA"
         onViewportChange={newViewport => setViewport(newViewport)}
+        onClick={handleMapClick}
         {...viewport}
       >
         {/* NAVIGATION CONTROL */}
@@ -58,6 +77,18 @@ const Map = ({ classes }) => {
             offsetTop={-37}
           >
             <PinIcon size={40} color="red" />
+          </Marker>
+        )}
+
+        {/* DRAFT PIN */}
+        {draft && (
+          <Marker
+            latitude={draft.latitude}
+            longitude={draft.longitude}
+            offsetLeft={-19}
+            offsetTop={-37}
+          >
+            <PinIcon size={40} color="hotpink" />
           </Marker>
         )}
       </ReactMapGL>
