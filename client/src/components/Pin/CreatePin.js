@@ -23,9 +23,14 @@ const CreatePin = ({ classes }) => {
         Pin Location
       </Typography>
 
-      <div>
+      <div className={classes.inputContainer}>
         {/* PIN TITLE INPUT */}
-        <TextField name="title" label="Title" placeholder="Insert Pin title" />
+        <TextField
+          name="title"
+          label="Title"
+          placeholder="Insert Pin title"
+          fullWidth
+        />
         {/* PIN PHOTO INPUT -- HIDDEN */}
         <input
           accept="image/*"
@@ -53,13 +58,17 @@ const CreatePin = ({ classes }) => {
           variant="outlined"
         />
       </div>
-      <div>
+
+      {/* BUTTONS */}
+      <div className={classes.buttonContainer}>
+        {/* DISCARD */}
         <Button className={classes.button} variant="contained" color="primary">
           <ClearIcon className={classes.leftIcon} />
           Discard
         </Button>
+        {/* SUBMIT */}
         <Button
-          type="submit "
+          type="submit"
           className={classes.button}
           variant="contained"
           color="secondary"
@@ -79,11 +88,18 @@ const styles = theme => ({
     alignItems: 'center',
     flexDirection: 'column',
     paddingBottom: theme.spacing.unit,
+    width: '80%',
   },
   contentField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
-    width: '95%',
+    // marginLeft: theme.spacing.unit,
+    // marginRight: theme.spacing.unit,
+    // margin: '0 auto',
+    width: '100%',
+  },
+  inputContainer: {
+    width: '100%',
+    display: 'flex',
+    flexWrap: 'nowrap',
   },
   input: {
     display: 'none',
@@ -104,11 +120,16 @@ const styles = theme => ({
     fontSize: 20,
     marginLeft: theme.spacing.unit,
   },
+  buttonContainer: {
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'space-around',
+  },
   button: {
     marginTop: theme.spacing.unit * 2,
     marginBottom: theme.spacing.unit * 2,
     // marginRight: theme.spacing.unit,
-    marginLeft: 0,
+    // marginLeft: 0,
   },
 })
 
