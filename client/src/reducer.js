@@ -23,6 +23,7 @@ export default function reducer(state, { type, payload }) {
           latitude: 0,
           longitude: 0,
         },
+        currentPin: null,
       }
     case 'UPDATE_DRAFT_LOCATION':
       return {
@@ -47,6 +48,12 @@ export default function reducer(state, { type, payload }) {
         ...state,
         pins: [...state.pins, payload],
         newPin: payload,
+      }
+    case 'SET_PIN':
+      return {
+        ...state,
+        currentPin: payload,
+        draft: null,
       }
     default:
       return state

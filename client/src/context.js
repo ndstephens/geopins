@@ -6,6 +6,7 @@ const Context = createContext({
   draft: null,
   pins: [],
   newPin: null,
+  currentPin: null,
 })
 
 export default Context

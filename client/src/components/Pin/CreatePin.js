@@ -62,7 +62,7 @@ const CreatePin = ({ classes }) => {
       }
       // send mutation to create new Pin, grab response
       const { createPin } = await client.request(CREATE_PIN, variables)
-      // add new Pin to 'pins' in state
+      // add new Pin to 'pins' in state, AND set as 'newPin' in state
       dispatch({ type: 'CREATE_PIN', payload: createPin })
       // clear draft pin data from state/context
       handleDeleteDraft()

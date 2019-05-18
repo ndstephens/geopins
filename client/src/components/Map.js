@@ -6,13 +6,13 @@ import { GET_PINS } from '../graphql/queries'
 
 import Context from '../context'
 
-import ReactMapGL, { NavigationControl, Marker } from 'react-map-gl'
+import ReactMapGL, { NavigationControl, Marker, Popup } from 'react-map-gl'
 import PinIcon from './PinIcon'
 import Blog from './Blog'
 
-// import Button from "@material-ui/core/Button";
-// import Typography from "@material-ui/core/Typography";
-// import DeleteIcon from "@material-ui/icons/DeleteTwoTone";
+import Button from '@material-ui/core/Button'
+import Typography from '@material-ui/core/Typography'
+import DeleteIcon from '@material-ui/icons/DeleteTwoTone'
 
 const INITIAL_VIEWPORT = {
   latitude: 37.7577,
@@ -24,7 +24,7 @@ const Map = ({ classes }) => {
   const client = useClient()
 
   const {
-    state: { draft, pins, newPin },
+    state: { currentUser, draft, pins, newPin },
     dispatch,
   } = useContext(Context)
 
@@ -38,6 +38,8 @@ const Map = ({ classes }) => {
   useEffect(() => {
     getUserPosition()
   }, [])
+
+  const [popup, setPopup] = useState(null)
 
   const getPins = async () => {
     const { getPins } = await client.request(GET_PINS)
@@ -70,6 +72,13 @@ const Map = ({ classes }) => {
     const isNewPin = diffInMinutes(Date.now(), Number(pin.createdAt)) <= 30
     return isNewPin ? 'limegreen' : 'darkblue'
   }
+
+  const handleSelectPin = pin => {
+    setPopup(pin)
+    dispatch({ type: 'SET_PIN', payload: pin })
+  }
+
+  const isAuthUser = () => currentUser._id === popup.author._id
 
   return (
     <div className={classes.root}>
@@ -123,12 +132,39 @@ const Map = ({ classes }) => {
             offsetTop={-37}
           >
             <PinIcon
+              onClick={() => handleSelectPin(pin)}
               size={40}
               color={highlightNewPins(pin)}
               newPin={newPin && pin._id === newPin._id}
             />
           </Marker>
         ))}
+
+        {/* POPUP DIALOG FOR SELECTED PIN */}
+        {popup && (
+          <Popup
+            anchor="top"
+            latitude={popup.latitude}
+            longitude={popup.longitude}
+            closeOnClick={false}
+            onClose={() => setPopup(null)}
+          >
+            <img
+              className={classes.popupImage}
+              src={popup.image}
+              alt={popup.title}
+            />
+            <div className={classes.popupTab}>
+              <Typography>{popup.title}</Typography>
+              {/* DELETE BUTTON -- shown if Pin belongs to current user */}
+              {isAuthUser() && (
+                <Button>
+                  <DeleteIcon className={classes.deleteIcon} />
+                </Button>
+              )}
+            </div>
+          </Popup>
+        )}
       </ReactMapGL>
 
       {/* BLOG -- PIN CONTENT */}
@@ -161,10 +197,24 @@ const styles = {
     objectFit: 'cover',
   },
   popupTab: {
+    maxWidth: '200px',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'column',
+    justifyContent: 'space-between',
+    flexWrap: 'nowrap',
+    // flexDirection: 'column',
+    '& p': {
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      paddingLeft: '0.6em',
+    },
+    '& button': {
+      paddingRight: '0',
+      paddingLeft: '0',
+      // marginRight: '-14px',
+      minWidth: '36px',
+    },
   },
 }
 
