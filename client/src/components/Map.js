@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
+import diffInMinutes from 'date-fns/difference_in_minutes'
 import { withStyles } from '@material-ui/core/styles'
 import { useClient } from '../graphql/client'
 import { GET_PINS } from '../graphql/queries'
@@ -65,6 +66,11 @@ const Map = ({ classes }) => {
     })
   }
 
+  const highlightNewPins = pin => {
+    const isNewPin = diffInMinutes(Date.now(), Number(pin.createdAt)) <= 30
+    return isNewPin ? 'limegreen' : 'darkblue'
+  }
+
   return (
     <div className={classes.root}>
       <ReactMapGL
@@ -116,7 +122,7 @@ const Map = ({ classes }) => {
             offsetLeft={-19}
             offsetTop={-37}
           >
-            <PinIcon size={40} color="darkblue" />
+            <PinIcon size={40} color={highlightNewPins(pin)} />
           </Marker>
         ))}
       </ReactMapGL>
