@@ -26,5 +26,11 @@ module.exports = {
 
       return Pin.populate(newPin, 'author')
     }),
+    deletePin: authenticated(async (root, { pinId }, { currentUser, Pin }) => {
+      return Pin.findOneAndDelete({
+        _id: pinId,
+        author: currentUser._id,
+      })
+    }),
   },
 }

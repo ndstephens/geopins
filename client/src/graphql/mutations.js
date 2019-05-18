@@ -23,3 +23,12 @@ mutation CREATE_PIN($title: String!, $content: String!, $image: String!, $latitu
   }
 }
 `
+
+export const DELETE_PIN = `
+mutation DELETE_PIN($pinId: ID!) {
+  deletePin(pinId: $pinId) {
+    _id
+    image
+  }
+}
+`
