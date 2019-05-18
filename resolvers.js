@@ -11,6 +11,11 @@ const authenticated = resolverFunc => (root, args, ctx, info) => {
 module.exports = {
   Query: {
     me: authenticated((root, args, ctx) => ctx.currentUser),
+    getPins: async (root, args, { Pin }) => {
+      return Pin.find({})
+        .populate('author')
+        .populate('comments.author')
+    },
   },
   Mutation: {
     createPin: authenticated(async (root, { input }, { currentUser, Pin }) => {

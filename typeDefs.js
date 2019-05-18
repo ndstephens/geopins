@@ -2,11 +2,12 @@ const { gql } = require('apollo-server')
 
 module.exports = gql`
   type Query {
-    me: User!
+    me: User
+    getPins: [Pin!]
   }
 
   type Mutation {
-    createPin(input: CreatePinInput!): Pin!
+    createPin(input: CreatePinInput!): Pin
   }
 
   type User {
