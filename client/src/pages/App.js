@@ -1,5 +1,6 @@
 import React from 'react'
 import withRoot from '../withRoot'
+import 'animate.css'
 
 import Header from '../components/Header'
 import Map from '../components/Map'

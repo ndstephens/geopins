@@ -24,7 +24,7 @@ const Map = ({ classes }) => {
   const client = useClient()
 
   const {
-    state: { draft, pins },
+    state: { draft, pins, newPin },
     dispatch,
   } = useContext(Context)
 
@@ -122,7 +122,11 @@ const Map = ({ classes }) => {
             offsetLeft={-19}
             offsetTop={-37}
           >
-            <PinIcon size={40} color={highlightNewPins(pin)} />
+            <PinIcon
+              size={40}
+              color={highlightNewPins(pin)}
+              newPin={newPin && pin._id === newPin._id}
+            />
           </Marker>
         ))}
       </ReactMapGL>

@@ -5,6 +5,7 @@ const Context = createContext({
   isAuth: false,
   draft: null,
   pins: [],
+  newPin: null,
 })
 
 export default Context
