@@ -49,18 +49,23 @@ export default function reducer(state, { type, payload }) {
         pins: [...state.pins, payload],
         newPin: payload,
       }
-    case 'SET_PIN':
-      return {
-        ...state,
-        currentPin: payload,
-        draft: null,
-      }
     case 'DELETE_PIN':
       return {
         ...state,
         pins: state.pins.filter(pin => pin._id !== payload),
         currentPin: null,
         draft: null,
+      }
+    case 'SET_CURRENT_PIN':
+      return {
+        ...state,
+        currentPin: payload,
+        draft: null,
+      }
+    case 'CLEAR_CURRENT_PIN':
+      return {
+        ...state,
+        currentPin: null,
       }
     default:
       return state

@@ -58,6 +58,8 @@ const Map = ({ classes }) => {
   }
 
   const handleMapClick = ({ lngLat, leftButton }) => {
+    // close any open popups
+    setPopupPin(null)
     if (!leftButton) return
     if (!draft) {
       dispatch({ type: 'CREATE_DRAFT' })
@@ -76,7 +78,7 @@ const Map = ({ classes }) => {
 
   const handleSelectPin = pin => {
     setPopupPin(pin)
-    dispatch({ type: 'SET_PIN', payload: pin })
+    dispatch({ type: 'SET_CURRENT_PIN', payload: pin })
   }
 
   const isAuthUser = () => currentUser._id === popupPin.author._id
@@ -155,7 +157,10 @@ const Map = ({ classes }) => {
             latitude={popupPin.latitude}
             longitude={popupPin.longitude}
             closeOnClick={false}
-            onClose={() => setPopupPin(null)}
+            onClose={() => {
+              setPopupPin(null)
+              dispatch({ type: 'CLEAR_CURRENT_PIN' })
+            }}
           >
             <img
               className={classes.popupImage}
@@ -175,7 +180,7 @@ const Map = ({ classes }) => {
         )}
       </ReactMapGL>
 
-      {/* BLOG -- PIN CONTENT */}
+      {/* SIDEBAR / BLOG -- PIN CONTENT */}
       <Blog />
     </div>
   )

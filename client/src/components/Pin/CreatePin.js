@@ -1,7 +1,6 @@
 import React, { useState, useContext } from 'react'
 import axios from 'axios'
 import { useClient } from '../../graphql/client'
-
 import { CREATE_PIN } from '../../graphql/mutations'
 
 import { withStyles } from '@material-ui/core/styles'
