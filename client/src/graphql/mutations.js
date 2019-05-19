@@ -24,15 +24,6 @@ mutation CREATE_PIN($title: String!, $content: String!, $image: String!, $latitu
 }
 `
 
-export const DELETE_PIN = `
-mutation DELETE_PIN($pinId: ID!) {
-  deletePin(pinId: $pinId) {
-    _id
-    image
-  }
-}
-`
-
 export const CREATE_COMMENT = `
 mutation CREATE_COMMENT($pinId: ID!, $text: String!) {
   createComment(pinId: $pinId, text: $text) {
@@ -53,11 +44,19 @@ mutation CREATE_COMMENT($pinId: ID!, $text: String!) {
       text
       createdAt
       author {
-        _id
         name
         picture
       }
     }
+  }
+}
+`
+
+export const DELETE_PIN = `
+mutation DELETE_PIN($pinId: ID!) {
+  deletePin(pinId: $pinId) {
+    _id
+    image
   }
 }
 `
