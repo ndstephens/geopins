@@ -32,5 +32,21 @@ module.exports = {
         author: currentUser._id,
       })
     }),
+    createComment: authenticated(
+      async (root, { pinId, text }, { currentUser, Pin }) => {
+        const newComment = {
+          text,
+          author: currentUser._id,
+          createdAt: Date.now(),
+        }
+        return Pin.findOneAndUpdate(
+          { _id: pinId },
+          { $push: { comments: newComment } },
+          { new: true }
+        )
+          .populate('author')
+          .populate('comments.author')
+      }
+    ),
   },
 }

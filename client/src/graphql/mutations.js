@@ -32,3 +32,32 @@ mutation DELETE_PIN($pinId: ID!) {
   }
 }
 `
+
+export const CREATE_COMMENT = `
+mutation CREATE_COMMENT($pinId: ID!, $text: String!) {
+  createComment(pinId: $pinId, text: $text) {
+    _id
+    title
+    content
+    image
+    latitude
+    longitude
+    createdAt
+    author {
+      _id
+      name
+      email
+      picture
+    }
+    comments {
+      text
+      createdAt
+      author {
+        _id
+        name
+        picture
+      }
+    }
+  }
+}
+`

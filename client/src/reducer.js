@@ -49,6 +49,12 @@ export default function reducer(state, { type, payload }) {
         pins: [...state.pins, payload],
         newPin: payload,
       }
+    case 'UPDATE_PIN_WITH_COMMENT':
+      return {
+        ...state,
+        pins: state.pins.map(pin => (pin._id === payload._id ? payload : pin)),
+        currentPin: payload,
+      }
     case 'DELETE_PIN':
       return {
         ...state,
