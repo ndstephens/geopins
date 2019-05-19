@@ -59,13 +59,18 @@ const CreatePin = ({ classes }) => {
         latitude: draft.latitude,
         longitude: draft.longitude,
       }
+
       // send mutation to create new Pin, grab response
-      const { createPin } = await client.request(CREATE_PIN, variables)
+      // const { createPin } = await client.request(CREATE_PIN, variables)
+      //? No longer need response for use in dispatch
+      await client.request(CREATE_PIN, variables)
+
       // add new Pin to 'pins' in state, AND set as 'newPin' in state
-      dispatch({ type: 'CREATE_PIN', payload: createPin })
+      // dispatch({ type: 'CREATE_PIN', payload: createPin })
+      //? No longer have to dispatch here directly, will be dispatched by a subscription listener for newly created Pins in Map.js
+
       // clear draft pin data from state/context
       handleDeleteDraft()
-      console.log('Pin created', { createPin })
     } catch (err) {
       // re-enable Submit button
       setIsSubmitting(false)

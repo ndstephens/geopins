@@ -12,10 +12,14 @@ const resolvers = require('./resolvers')
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: async ({ req }) => {
+  context: async ({ req, connection }) => {
     let authToken = null
     let currentUser = null
     try {
+      if (connection) {
+        // console.log(connection)
+        return { ...connection.context, Pin }
+      }
       authToken = req.headers.authorization
       if (authToken) {
         // find user in db or create a new one

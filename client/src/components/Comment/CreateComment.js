@@ -15,7 +15,7 @@ const CreateComment = ({ classes }) => {
   const client = useClient()
 
   const {
-    dispatch,
+    // dispatch,
     state: { currentPin },
   } = useContext(Context)
 
@@ -23,8 +23,14 @@ const CreateComment = ({ classes }) => {
 
   const handleCommentSubmit = async () => {
     const variables = { pinId: currentPin._id, text: commentText }
-    const { createComment } = await client.request(CREATE_COMMENT, variables)
-    dispatch({ type: 'UPDATE_PIN_WITH_COMMENT', payload: createComment })
+
+    //? No longer need response for use in dispatch
+    // const { createComment } = await client.request(CREATE_COMMENT, variables)
+    await client.request(CREATE_COMMENT, variables)
+
+    //? No longer have to dispatch here directly, will be dispatched by a subscription listener for updated Pins in Map.js
+    // dispatch({ type: 'UPDATE_PIN_WITH_COMMENT', payload: createComment })
+
     setCommentText('')
   }
 
