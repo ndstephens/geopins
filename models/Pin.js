@@ -29,11 +29,10 @@ const PinSchema = new mongoose.Schema(
     },
     comments: [
       {
-        text: { type: String, required: true },
+        text: { type: String },
         author: {
           type: mongoose.Schema.Types.ObjectId,
           ref: 'User',
-          required: true,
         },
         createdAt: { type: Date, default: Date.now },
       },
