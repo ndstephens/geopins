@@ -12,6 +12,12 @@ module.exports = gql`
     createComment(pinId: ID!, text: String!): Pin
   }
 
+  type Subscription {
+    pinCreatedSubscription: Pin
+    pinUpdatedSubscription: Pin # new Pin comment was added
+    pinDeletedSubscription: Pin
+  }
+
   type User {
     _id: ID!
     name: String!
