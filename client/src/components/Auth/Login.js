@@ -32,7 +32,11 @@ const Login = ({ classes }) => {
     }
   }
 
-  const handleFailure = err => console.error('Error logging in', err)
+  const handleFailure = err => {
+    console.error('Error logging in', err)
+    // handle when Token is expired, will kick back to Splash/Login page
+    dispatch({ type: 'IS_LOGGED_IN', payload: false })
+  }
 
   return (
     <div className={classes.root}>
