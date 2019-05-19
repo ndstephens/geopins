@@ -1,6 +1,5 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import distanceInWordsToNow from 'date-fns/distance_in_words_to_now'
-import Context from '../../context'
 import { withStyles } from '@material-ui/core/styles'
 
 import List from '@material-ui/core/List'
@@ -11,10 +10,6 @@ import Avatar from '@material-ui/core/Avatar'
 import Typography from '@material-ui/core/Typography'
 
 const Comments = ({ classes, comments }) => {
-  const {
-    state: { currentPin },
-  } = useContext(Context)
-
   return (
     <List className={classes.root}>
       {comments.map((comment, index) => (
