@@ -1,6 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react'
 import diffInMinutes from 'date-fns/difference_in_minutes'
 import { withStyles } from '@material-ui/core/styles'
+import { unstable_useMediaQuery as useMediaQuery } from '@material-ui/core/useMediaQuery'
+
+import Context from '../context'
+
 import { useClient } from '../graphql/client'
 import { GET_PINS } from '../graphql/queries'
 import { DELETE_PIN } from '../graphql/mutations'
@@ -9,8 +13,6 @@ import {
   PIN_UPDATED_SUBSCRIPTION,
   PIN_DELETED_SUBSCRIPTION,
 } from '../graphql/subscriptions'
-
-import Context from '../context'
 
 import ReactMapGL, { NavigationControl, Marker, Popup } from 'react-map-gl'
 import { Subscription } from 'react-apollo'
@@ -29,6 +31,7 @@ const INITIAL_VIEWPORT = {
 
 const Map = ({ classes }) => {
   const client = useClient()
+  const mobileSize = useMediaQuery('(max-width: 650px)')
 
   const {
     state: { currentUser, draft, pins, newPin },
@@ -103,12 +106,13 @@ const Map = ({ classes }) => {
   }
 
   return (
-    <div className={classes.root}>
+    <div className={mobileSize ? classes.rootMobile : classes.root}>
       <ReactMapGL
         width="100vw"
         height="calc(100vh - 64px)"
         mapStyle="mapbox://styles/mapbox/streets-v9"
         mapboxApiAccessToken="pk.eyJ1IjoibmRzdGVwaGVucyIsImEiOiJjanZyOTN3ZW8yc2p0NDNsNjRmZnJ2NjV0In0.yUu9-1x2TlsiQTZm30lMiA"
+        scrollZoom={!mobileSize}
         onViewportChange={newViewport => setViewport(newViewport)}
         onClick={handleMapClick}
         {...viewport}

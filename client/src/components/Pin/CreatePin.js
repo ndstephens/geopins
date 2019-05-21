@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react'
+import { unstable_useMediaQuery as useMediaQuery } from '@material-ui/core/useMediaQuery'
 import axios from 'axios'
 import { useClient } from '../../graphql/client'
 import { CREATE_PIN } from '../../graphql/mutations'
@@ -16,6 +17,7 @@ import SaveIcon from '@material-ui/icons/SaveTwoTone'
 
 const CreatePin = ({ classes }) => {
   const client = useClient()
+  const mobileSize = useMediaQuery('(max-width: 650px)')
 
   const {
     state: { draft },
@@ -128,7 +130,7 @@ const CreatePin = ({ classes }) => {
           name="content"
           label="Content"
           multiline
-          rows="6"
+          rows={mobileSize ? '3' : '6'}
           margin="normal"
           fullWidth
           variant="outlined"
@@ -173,6 +175,7 @@ const styles = theme => ({
     flexDirection: 'column',
     paddingBottom: theme.spacing.unit,
     width: '80%',
+    margin: '0 auto',
   },
   contentField: {
     // marginLeft: theme.spacing.unit,
