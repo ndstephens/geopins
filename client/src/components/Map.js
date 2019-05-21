@@ -51,6 +51,13 @@ const Map = ({ classes }) => {
 
   const [popupPin, setPopupPin] = useState(null)
 
+  //? Remove popup display if its pin was deleted by the author of the pin (in the case where someone is viewing a pin at the same time the author happens to delete it)
+  useEffect(() => {
+    const pinExists =
+      popupPin && pins.findIndex(pin => pin._id === popupPin._id) !== -1
+    if (!pinExists) setPopupPin(null)
+  }, [pins.length])
+
   const getPins = async () => {
     const { getPins } = await client.request(GET_PINS)
     dispatch({ type: 'GET_PINS', payload: getPins })
