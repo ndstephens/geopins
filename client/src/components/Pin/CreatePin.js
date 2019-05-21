@@ -175,12 +175,9 @@ const styles = theme => ({
     flexDirection: 'column',
     paddingBottom: theme.spacing.unit,
     width: '80%',
-    margin: '0 auto',
+    margin: '1em auto',
   },
   contentField: {
-    // marginLeft: theme.spacing.unit,
-    // marginRight: theme.spacing.unit,
-    // margin: '0 auto',
     width: '100%',
   },
   inputContainer: {
@@ -215,8 +212,6 @@ const styles = theme => ({
   button: {
     marginTop: theme.spacing.unit * 2,
     marginBottom: theme.spacing.unit * 2,
-    // marginRight: theme.spacing.unit,
-    // marginLeft: 0,
   },
 })
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react'
 import diffInMinutes from 'date-fns/difference_in_minutes'
 import { withStyles } from '@material-ui/core/styles'
 import { unstable_useMediaQuery as useMediaQuery } from '@material-ui/core/useMediaQuery'
+import useViewport from '../useViewport'
 
 import Context from '../context'
 
@@ -23,15 +24,16 @@ import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import DeleteIcon from '@material-ui/icons/DeleteTwoTone'
 
-const INITIAL_VIEWPORT = {
-  latitude: 37.7577,
-  longitude: -122.4376,
-  zoom: 13,
-}
-
 const Map = ({ classes }) => {
-  const client = useClient()
   const mobileSize = useMediaQuery('(max-width: 650px)')
+  const client = useClient()
+  const [
+    viewport,
+    setViewport,
+    userPosition,
+    getUserPosition,
+    fetchingUserPosition,
+  ] = useViewport()
 
   const {
     state: { currentUser, draft, pins, newPin },
@@ -40,13 +42,6 @@ const Map = ({ classes }) => {
 
   useEffect(() => {
     getPins()
-  }, [])
-
-  const [viewport, setViewport] = useState(INITIAL_VIEWPORT)
-  const [userPosition, setUserPosition] = useState(null)
-
-  useEffect(() => {
-    getUserPosition()
   }, [])
 
   const [popupPin, setPopupPin] = useState(null)
@@ -61,16 +56,6 @@ const Map = ({ classes }) => {
   const getPins = async () => {
     const { getPins } = await client.request(GET_PINS)
     dispatch({ type: 'GET_PINS', payload: getPins })
-  }
-
-  const getUserPosition = () => {
-    if ('geolocation' in navigator) {
-      navigator.geolocation.getCurrentPosition(position => {
-        const { latitude, longitude } = position.coords
-        setViewport({ ...viewport, latitude, longitude })
-        setUserPosition({ latitude, longitude })
-      })
-    }
   }
 
   const handleMapClick = ({ lngLat, leftButton }) => {
@@ -194,7 +179,7 @@ const Map = ({ classes }) => {
               <Typography>{popupPin.title}</Typography>
               {/* DELETE BUTTON -- shown if Pin belongs to current user */}
               {isAuthUser() && (
-                <Button onClick={e => handleDeletePin(popupPin._id)}>
+                <Button onClick={() => handleDeletePin(popupPin._id)}>
                   <DeleteIcon className={classes.deleteIcon} />
                 </Button>
               )}
@@ -202,9 +187,11 @@ const Map = ({ classes }) => {
           </Popup>
         )}
       </ReactMapGL>
-
       {/* SIDEBAR / BLOG -- PIN CONTENT */}
-      <Blog />
+      <Blog
+        getUserPosition={getUserPosition}
+        fetchingUserPosition={fetchingUserPosition}
+      />
 
       {/* SUBSCRIPTIONS FOR CREATING, UPDATING, and DELETING PINS */}
       <Subscription
@@ -267,7 +254,6 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'space-between',
     flexWrap: 'nowrap',
-    // flexDirection: 'column',
     '& p': {
       whiteSpace: 'nowrap',
       overflow: 'hidden',
@@ -277,7 +263,6 @@ const styles = {
     '& button': {
       paddingRight: '0',
       paddingLeft: '0',
-      // marginRight: '-14px',
       minWidth: '36px',
     },
   },

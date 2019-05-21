@@ -9,8 +9,10 @@ import CreatePin from './Pin/CreatePin'
 import PinContent from './Pin/PinContent'
 
 import { Paper } from '@material-ui/core'
+import Button from '@material-ui/core/Button'
+import Divider from '@material-ui/core/Divider'
 
-const Blog = ({ classes }) => {
+const Blog = ({ classes, getUserPosition, fetchingUserPosition }) => {
   const mobileSize = useMediaQuery('(max-width: 650px)')
   const {
     state: { draft, currentPin },
@@ -27,6 +29,21 @@ const Blog = ({ classes }) => {
 
   return (
     <Paper className={mobileSize ? classes.rootMobile : classes.root}>
+      {/* USER LOCATION BUTTON */}
+      <div className={classes.userLocationBtn}>
+        <Button
+          disabled={fetchingUserPosition}
+          onClick={getUserPosition}
+          variant="contained"
+          color="primary"
+        >
+          {fetchingUserPosition ? 'Fetching...' : 'Current Location'}
+        </Button>
+      </div>
+
+      <Divider />
+
+      {/* NoContent / CreatePin / PinContent */}
       <BlogContent />
     </Paper>
   )
@@ -35,17 +52,20 @@ const Blog = ({ classes }) => {
 const styles = {
   root: {
     minWidth: 350,
-    maxWidth: 400,
     maxHeight: 'calc(100vh - 64px)',
     overflowY: 'scroll',
-    display: 'flex',
-    justifyContent: 'center',
   },
   rootMobile: {
     maxWidth: '100%',
     maxHeight: 300,
     overflowX: 'hidden',
     overflowY: 'scroll',
+  },
+  userLocationBtn: {
+    height: '60px',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 }
 
