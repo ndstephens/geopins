@@ -217,7 +217,7 @@ const Map = ({ classes }) => {
           const { pinDeletedSubscription } = subscriptionData.data
           dispatch({
             type: 'DELETE_PIN',
-            payload: pinDeletedSubscription._id,
+            payload: pinDeletedSubscription,
           })
         }}
       />
