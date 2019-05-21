@@ -1,6 +1,10 @@
 require('dotenv').config()
+const path = require('path')
+const http = require('http')
 
-const { ApolloServer } = require('apollo-server')
+// const { ApolloServer } = require('apollo-server')
+const { ApolloServer } = require('apollo-server-express')
+const express = require('express')
 const mongoose = require('mongoose')
 const Pin = require('./models/Pin')
 
@@ -8,6 +12,10 @@ const { findOrCreateUser } = require('./controllers/userController')
 
 const typeDefs = require('./typeDefs')
 const resolvers = require('./resolvers')
+
+const app = express()
+
+// app.use(express.static('client/build'))
 
 const server = new ApolloServer({
   typeDefs,
@@ -33,6 +41,14 @@ const server = new ApolloServer({
   },
 })
 
+server.applyMiddleware({ app })
+
+// if (process.env.NODE_ENV === 'production') {
+//   app.get('*', (req, res) => {
+//     res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
+//   })
+// }
+
 mongoose
   .connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
@@ -41,4 +57,19 @@ mongoose
   .then(() => console.log('DB connected...'))
   .catch(err => console.error(err))
 
-server.listen().then(({ url }) => console.log(`Server listening at ${url}`))
+// server
+//   .listen({ port: process.env.PORT || 4000 })
+//   .then(({ url }) => console.log(`Server listening at ${url}`))
+
+const PORT = process.env.PORT || 4000
+
+const httpServer = http.createServer(app)
+server.installSubscriptionHandlers(httpServer)
+
+httpServer.listen({ port: PORT }, () => {
+  console.log(
+    `Server listening on port ${PORT}`,
+    server.graphqlPath,
+    server.subscriptionsPath
+  )
+})

@@ -52,6 +52,7 @@ const Blog = ({ classes, getUserPosition, fetchingUserPosition }) => {
 const styles = {
   root: {
     minWidth: 350,
+    maxWidth: 350,
     maxHeight: 'calc(100vh - 64px)',
     overflowY: 'scroll',
   },

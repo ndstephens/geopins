@@ -16,8 +16,13 @@ import ProtectedRoute from './ProtectedRoute'
 import App from './pages/App'
 import Splash from './pages/Splash'
 
+const wsUri =
+  process.env.NODE_ENV === 'production'
+    ? 'wss://geopins-nds.herokuapp.com/graphql'
+    : 'ws://localhost:4000/graphql'
+
 const wsLink = new WebSocketLink({
-  uri: 'ws://localhost:4000/graphql',
+  uri: wsUri,
   options: {
     reconnect: true,
   },
@@ -39,6 +44,7 @@ const Root = () => {
           <Switch>
             <ProtectedRoute exact path="/" component={App} />
             <Route path="/login" component={Splash} />
+            <ProtectedRoute component={App} />
           </Switch>
         </Context.Provider>
       </ApolloProvider>
