@@ -15,7 +15,7 @@ const resolvers = require('./resolvers')
 
 const app = express()
 
-// app.use(express.static('client/build'))
+app.use(express.static('client/build'))
 
 const server = new ApolloServer({
   typeDefs,
@@ -43,11 +43,11 @@ const server = new ApolloServer({
 
 server.applyMiddleware({ app })
 
-// if (process.env.NODE_ENV === 'production') {
-//   app.get('*', (req, res) => {
-//     res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
-//   })
-// }
+if (process.env.NODE_ENV === 'production') {
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
+  })
+}
 
 mongoose
   .connect(process.env.MONGO_URI, {
