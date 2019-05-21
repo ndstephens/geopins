@@ -50,17 +50,36 @@ export default function reducer(state, { type, payload }) {
         newPin: payload,
       }
     case 'UPDATE_PIN_WITH_COMMENT':
+      // If 'currentPin' has a value AND is the pin being updated, then set to updated value.  Otherwise leave value unchanged
+      if (state.currentPin) {
+        const isCurrentPin = state.currentPin._id === payload._id
+        if (isCurrentPin) {
+          return {
+            ...state,
+            pins: state.pins.filter(pin => pin._id !== payload),
+            currentPin: payload,
+          }
+        }
+      }
       return {
         ...state,
         pins: state.pins.map(pin => (pin._id === payload._id ? payload : pin)),
-        currentPin: payload,
       }
     case 'DELETE_PIN':
+      // If 'currentPin' has a value AND is the pin being deleted, then set to 'null'.  Otherwise leave value unchanged
+      if (state.currentPin) {
+        const isCurrentPin = state.currentPin._id === payload._id
+        if (isCurrentPin) {
+          return {
+            ...state,
+            pins: state.pins.filter(pin => pin._id !== payload),
+            currentPin: null,
+          }
+        }
+      }
       return {
         ...state,
         pins: state.pins.filter(pin => pin._id !== payload),
-        currentPin: null,
-        draft: null,
       }
     case 'SET_CURRENT_PIN':
       return {
