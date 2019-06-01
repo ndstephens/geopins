@@ -35,7 +35,7 @@ const Blog = ({ classes, getUserPosition, fetchingUserPosition }) => {
           disabled={fetchingUserPosition}
           onClick={getUserPosition}
           variant="contained"
-          color="primary"
+          color="secondary"
         >
           {fetchingUserPosition ? 'Fetching...' : 'Current Location'}
         </Button>

@@ -5,6 +5,6 @@ export default ({ size, color, newPin, onClick }) => (
   <PlaceTwoTone
     onClick={onClick}
     style={{ fontSize: size, color }}
-    className={newPin ? 'animated bounce delay-1s' : ''}
+    className={newPin ? 'animated bounce' : ''}
   />
 )

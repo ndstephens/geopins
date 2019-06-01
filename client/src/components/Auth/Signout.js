@@ -41,11 +41,11 @@ const styles = {
     display: 'flex',
   },
   buttonText: {
-    color: 'orange',
+    color: '#fff',
   },
   buttonIcon: {
     marginLeft: '5px',
-    color: 'orange',
+    color: 'cyan',
   },
 }
 

@@ -148,6 +148,7 @@ const Map = ({ classes }) => {
             longitude={pin.longitude}
             offsetLeft={-19}
             offsetTop={-37}
+            className={classes.marker}
           >
             <PinIcon
               onClick={() => handleSelectPin(pin)}
@@ -240,6 +241,11 @@ const styles = {
     top: 0,
     left: 0,
     margin: '1em',
+  },
+  marker: {
+    '& svg:hover': {
+      cursor: 'pointer',
+    },
   },
   deleteIcon: {
     color: 'red',

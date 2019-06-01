@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 
 const DEFAULT_VIEWPORT = {
-  latitude: 37.7577,
-  longitude: -122.4376,
+  latitude: 39.9526,
+  longitude: -75.1652,
   zoom: 13,
 }
 
