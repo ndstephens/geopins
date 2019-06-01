@@ -1,5 +1,5 @@
 export const CREATE_PIN = `
-mutation CREATE_PIN($title: String!, $content: String!, $image: String!, $latitude: Float!, $longitude: Float!) {
+mutation CREATE_PIN($title: String!, $content: String!, $image: String, $latitude: Float!, $longitude: Float!) {
   createPin(input: {
     title: $title,
     content: $content,

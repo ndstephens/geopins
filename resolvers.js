@@ -36,9 +36,8 @@ module.exports = {
 
       const createdPin = await Pin.populate(newPin, 'author')
 
-      // publish and then return the created Pin
+      // publish the created Pin
       pubsub.publish(PIN_CREATED, { pinCreatedSubscription: createdPin })
-      // return createdPin
     }),
     //? UPDATE PIN (just the comment field)
     createComment: authenticated(
@@ -56,11 +55,10 @@ module.exports = {
           .populate('author')
           .populate('comments.author')
 
-        // publish and then return the updated Pin
+        // publish the updated Pin
         pubsub.publish(PIN_UPDATED, {
           pinUpdatedSubscription: updatedPin,
         })
-        // return updatedPin
       }
     ),
     //? DELETE PIN
@@ -70,9 +68,8 @@ module.exports = {
         author: currentUser._id,
       })
 
-      // publish and then return the deleted Pin
+      // publish the deleted Pin
       pubsub.publish(PIN_DELETED, { pinDeletedSubscription: deletedPin })
-      // return deletedPin
     }),
   },
 

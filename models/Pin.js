@@ -12,7 +12,7 @@ const PinSchema = new mongoose.Schema(
     },
     image: {
       type: String,
-      required: true,
+      // required: true,
     },
     latitude: {
       type: Number,

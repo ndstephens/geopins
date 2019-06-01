@@ -170,11 +170,13 @@ const Map = ({ classes }) => {
               dispatch({ type: 'CLEAR_CURRENT_PIN' })
             }}
           >
-            <img
-              className={classes.popupImage}
-              src={popupPin.image}
-              alt={popupPin.title}
-            />
+            {popupPin.image && (
+              <img
+                className={classes.popupImage}
+                src={popupPin.image}
+                alt={popupPin.title}
+              />
+            )}
             <div className={classes.popupTab}>
               <Typography>{popupPin.title}</Typography>
               {/* DELETE BUTTON -- shown if Pin belongs to current user */}

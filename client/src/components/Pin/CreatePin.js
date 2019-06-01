@@ -51,8 +51,8 @@ const CreatePin = ({ classes }) => {
       e.preventDefault()
       // update isSubmitting in state (used to disable Submit button)
       setIsSubmitting(true)
-      // upload image to Cloudinary and retrieve its URL
-      const imageUrl = await handleImageUpload()
+      // upload image to Cloudinary and retrieve its URL (if exists)
+      const imageUrl = image ? await handleImageUpload() : ''
       // create GraphQL variables object
       const variables = {
         title: title.trim(),
@@ -156,7 +156,7 @@ const CreatePin = ({ classes }) => {
           className={classes.button}
           variant="contained"
           color="secondary"
-          disabled={!title.trim() || !image || !content.trim() || isSubmitting}
+          disabled={!title.trim() || !content.trim() || isSubmitting}
           onClick={handleSubmit}
         >
           Submit
