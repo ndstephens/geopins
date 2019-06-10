@@ -4,7 +4,7 @@ Full-stack CRUD app allowing logged-in users to place pins on a map (with photo 
 
 Logging in with Google OAuth is necessary to demo app. Removed image upload requirement for new pins for demoing purposes.  New pins bounce in and are green for first 30 minutes, thereafter blue-ish.  Current location pin, if activated and given permission, is pink.
 
-Please view [working demo](https://geopins-nds.herokuapp.com/)
+### Please view [working demo](https://geopins-nds.herokuapp.com/)
 
 > When viewing hosted app, initial load time might be extended due to Heroku spinning up dormant instance
 
