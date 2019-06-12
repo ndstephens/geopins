@@ -22,4 +22,6 @@ Logging in with Google OAuth is necessary to demo app. Removed image upload requ
 - MongoDB Atlas / Mongoose
 - etc...
 
+<br>
+
 ![geo-pins](./images/geo-pins.png)
