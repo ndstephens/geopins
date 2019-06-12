@@ -6,7 +6,7 @@ Logging in with Google OAuth is necessary to demo app. Removed image upload requ
 
 ### View [working demo](https://geopins-nds.herokuapp.com/)
 
-> When viewing hosted app, initial load time might be extended due to Heroku spinning up dormant instance
+> PLEASE NOTE: This app is hosted on a Heroku free tier.  If currently in 'sleep mode' (from lack of recent activity) the initial request time may be up to 10 seconds.  Subsequent requests will perform normally.  This is not a performance/optimization issue with the app itself.
 
 ---
 
